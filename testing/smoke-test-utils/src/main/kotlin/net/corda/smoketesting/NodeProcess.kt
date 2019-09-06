@@ -15,6 +15,7 @@ import net.corda.testing.common.internal.asContextEnv
 import net.corda.testing.common.internal.checkNotOnClasspath
 import net.corda.testing.common.internal.testNetworkParameters
 import java.lang.IllegalStateException
+import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.Instant
@@ -52,7 +53,11 @@ class NodeProcess(
 
     // TODO All use of this factory have duplicate code which is either bundling the calling module or a 3rd party module
     // as a CorDapp for the nodes.
-    class Factory(private val buildDirectory: Path = Paths.get("build")) {
+    class Factory(
+            private val buildDirectory: Path = Paths.get("build"),
+            private val extraJvmArgs: Array<out String> = emptyArray(),
+            private val redirectConsoleTo: File? = null
+    ) {
         val cordaJar: Path by lazy {
             val cordaJarUrl = requireNotNull(this::class.java.getResource("/corda.jar")) {
                 "corda.jar could not be found in classpath"
@@ -109,6 +114,13 @@ class NodeProcess(
             return NodeProcess(config, nodeDir, process, client)
         }
 
+        fun setupPlugins(config: NodeConfig, jarPaths: List<String>): Factory {
+            (baseDirectory(config) / "drivers").createDirectories().also {
+                jarPaths.forEach { jar -> Paths.get(jar).copyToDirectory(it) }
+            }
+            return this
+        }
+
         private fun waitForNode(process: Process, config: NodeConfig, client: CordaRPCClient) {
             val executor = Executors.newSingleThreadScheduledExecutor()
             try {
@@ -139,11 +151,16 @@ class NodeProcess(
         }
 
         private fun startNode(nodeDir: Path): Process {
+            val redirectTo = redirectConsoleTo?.let {
+                ProcessBuilder.Redirect.appendTo(it)
+            } ?: ProcessBuilder.Redirect.INHERIT
+
             val builder = ProcessBuilder()
-                    .command(javaPath.toString(), "-Dcapsule.log=verbose", "-jar", cordaJar.toString())
+                    .command(javaPath.toString(), "-Dcapsule.log=verbose",
+                            "-jar", cordaJar.toString(), *extraJvmArgs)
                     .directory(nodeDir.toFile())
-                    .redirectError(ProcessBuilder.Redirect.INHERIT)
-                    .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+                    .redirectError(redirectTo)
+                    .redirectOutput(redirectTo)
 
             builder.environment().putAll(mapOf(
                     "CAPSULE_CACHE_DIR" to (buildDirectory / "capsule").toString()

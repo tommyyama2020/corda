@@ -16,7 +16,8 @@ class NodeConfig(
         val rpcAdminPort: Int,
         val isNotary: Boolean,
         val users: List<User>,
-        val devMode: Boolean = true
+        val devMode: Boolean = true,
+        val jarDirs: List<String> = emptyList()
 ) {
     companion object {
         val renderOptions: ConfigRenderOptions = ConfigRenderOptions.defaults().setOriginComments(false)
@@ -39,6 +40,7 @@ class NodeConfig(
                         .root())
                 .withValue("rpcUsers", valueFor(users.map { it.toConfig().root().unwrapped() }.toList()))
                 .withValue("useTestClock", valueFor(true))
+                .withValue("jarDirs", valueFor(jarDirs))
                 .withValue("devMode", valueFor(devMode))
         return if (isNotary) {
             config.withValue("notary", ConfigValueFactory.fromMap(mapOf("validating" to true)))

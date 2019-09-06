@@ -54,7 +54,7 @@ dependencies {
     // RxJava: observable streams of events.
     compile "io.reactivex:rxjava:$rxjava_version"
     
-    compile "org.apache.commons:commons-lang3:3.9"
+    compile "org.apache.commons:commons-lang3:$commons_lang_version"
 
     // Java ed25519 implementation. See https://github.com/str4d/ed25519-java/
     compile "net.i2p.crypto:eddsa:$eddsa_version"
@@ -69,14 +69,15 @@ dependencies {
     // required to use @Type annotation
     compile "org.hibernate:hibernate-core:$hibernate_version"
 
+    // FastThreadLocal
+    compile "io.netty:netty-common:$netty_version"
+
     compile group: "io.github.classgraph", name: "classgraph", version: class_graph_version
 
     testCompile "com.nhaarman:mockito-kotlin:$mockito_kotlin_version"
     testCompile "org.mockito:mockito-core:$mockito_version"
     testCompile "org.assertj:assertj-core:$assertj_version"
     testCompile "com.natpryce:hamkrest:$hamkrest_version"
-    testCompile 'org.hamcrest:hamcrest-library:2.1'
-
 }
 
 // TODO Consider moving it to quasar-utils in the future (introduced with PR-1388)
