@@ -49,6 +49,7 @@ import java.util.*
 import java.util.jar.JarOutputStream
 import java.util.jar.Manifest
 import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 import javax.security.auth.x500.X500Principal
 
 @Suppress("unused")
@@ -213,6 +214,16 @@ fun fakeAttachment(filePath1: String, content1: String, filePath2: String, conte
         js.putNextEntry(ZipEntry(filePath2))
         js.writer().apply { append(content2); flush() }
         js.closeEntry()
+    }
+    return bs.toByteArray()
+}
+
+fun fakeZIPAttachment(filePath: String, content: String): ByteArray {
+    val bs = ByteArrayOutputStream()
+    ZipOutputStream(bs).use { zs ->
+        zs.putNextEntry(ZipEntry(filePath))
+        zs.writer().apply { append(content); flush() }
+        zs.closeEntry()
     }
     return bs.toByteArray()
 }
