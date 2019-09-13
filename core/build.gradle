@@ -137,6 +137,10 @@ quasar {
 
 artifacts {
     testArtifacts testJar
+    publish jar
+    publish testJar {
+        classifier "test"
+    }
 }
 
 scanApi {
@@ -147,5 +151,6 @@ scanApi {
 }
 
 publish {
+    disableDefaultJar = true
     name jar.baseName
 }
