@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-apply from: '../../../deterministic.gradle'
+apply from: '../../deterministic.gradle'
 apply plugin: 'net.corda.plugins.publish-utils'
 apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'idea'

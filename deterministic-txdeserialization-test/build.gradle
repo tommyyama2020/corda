@@ -3,8 +3,8 @@ apply plugin: 'kotlin'
 dependencies {
     testCompile "net.corda.kernel:corda-core-deterministic:${corda_kernel_version}"
     testCompile "net.corda.kernel:corda-serialization:${corda_kernel_version}"
-    testCompile project(path: ':core-deterministic:testing:verifier', configuration: 'deterministicArtifacts')
-    testCompile project(path: ':core-deterministic:testing:data', configuration: 'testData')
+    testCompile project(path: ':deterministic-txdeserialization-test:verifier', configuration: 'deterministicArtifacts')
+    testCompile project(path: ':deterministic-txdeserialization-test:data', configuration: 'testData')
     testCompile(project(':finance:contracts')) {
         transitive = false
     }

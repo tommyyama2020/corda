@@ -91,9 +91,9 @@ project(":common-logging").projectDir = new File("$settingsDir/common/logging")
 
 apply from: 'buildCacheSettings.gradle'
 
-include 'core-deterministic:testing'
-include 'core-deterministic:testing:data'
-include 'core-deterministic:testing:verifier'
+include 'deterministic-txdeserialization-test'
+include 'deterministic-txdeserialization-test:data'
+include 'deterministic-txdeserialization-test:verifier'
 
 include 'tools:checkpoint-agent'
 findProject(':tools:checkpoint-agent')?.name = 'checkpoint-agent'

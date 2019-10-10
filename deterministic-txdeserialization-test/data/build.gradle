@@ -8,7 +8,7 @@ dependencies {
     testCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
     testCompile project(':finance:workflows')
     testCompile project(':node-driver')
-    testCompile project(path: ':core-deterministic:testing:verifier', configuration: 'runtimeArtifacts')
+    testCompile project(path: ':deterministic-txdeserialization-test:verifier', configuration: 'runtimeArtifacts')
 
     testCompile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testCompile "org.jetbrains.kotlin:kotlin-reflect"
