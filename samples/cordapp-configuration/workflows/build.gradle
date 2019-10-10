@@ -2,7 +2,7 @@ apply plugin: 'kotlin'
 apply plugin: 'net.corda.plugins.cordapp'
 
 dependencies {
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
 }
 
 cordapp {

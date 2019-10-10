@@ -4,7 +4,7 @@ apply plugin: 'net.corda.plugins.cordapp'
 description 'Corda Network Verifier - Workflows'
 
 dependencies {
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
     cordapp project(':samples:network-verifier:contracts')
 
     testCompile project(":test-utils")

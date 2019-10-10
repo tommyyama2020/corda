@@ -32,13 +32,13 @@ dependencies {
     // Note: 3rd party CorDapps should remember to include the relevant Finance CorDapp dependencies using `cordapp`
     // cordapp project(':finance:workflows')
     // cordapp project(':finance:contracts')
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
     cordaCompile project(':confidential-identities')
     
     cordapp project(':finance:contracts')
 
     testCompile project(':test-utils')
-    testCompile project(path: ':core', configuration: 'testArtifacts')
+    testCompile "net.corda.kernel:corda-core:${corda_kernel_version}:test"
     testCompile project(':node-driver')
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_jupiter_version}"

@@ -5,7 +5,7 @@ description 'Corda attachment demo - contracts'
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
 }
 
 cordapp {

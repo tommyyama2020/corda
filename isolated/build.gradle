@@ -4,7 +4,7 @@ apply plugin: 'net.corda.plugins.cordapp'
 description 'Isolated CorDapp for testing'
 
 dependencies {
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
 }
 
 cordapp {

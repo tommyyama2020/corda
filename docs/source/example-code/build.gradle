@@ -37,7 +37,7 @@ dependencies {
     // Use a much simpler SLF4J implementation here instead.
     cordaRuntime "org.slf4j:slf4j-simple:$slf4j_version"
 
-    compile project(':core')
+    compile "net.corda.kernel:corda-core:${corda_kernel_version}"
     compile project(':client:jfx')
     compile project(':node-driver')
     compile project(':testing:testserver')

@@ -6,7 +6,7 @@ apply plugin: 'com.jfrog.artifactory'
 description 'CLI Utilities'
 
 dependencies {
-    compile project(":core")
+    compile "net.corda.kernel:corda-core:${corda_kernel_version}"
     compile project(":common-logging")
     
     compile "info.picocli:picocli:$picocli_version"

@@ -10,10 +10,10 @@ apply plugin: 'com.jfrog.artifactory'
 description 'Corda finance module - contracts'
 
 dependencies {
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
 
     testCompile project(':test-utils')
-    testCompile project(path: ':core', configuration: 'testArtifacts')
+    testCompile "net.corda.kernel:corda-core:${corda_kernel_version}:test"
     testCompile project(':node-driver')
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_jupiter_version}"
     testImplementation "junit:junit:$junit_version"

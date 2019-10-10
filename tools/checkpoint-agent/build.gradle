@@ -35,7 +35,7 @@ dependencies {
     compile "com.esotericsoftware:kryo:4.0.0"
     compile "co.paralleluniverse:quasar-core:$quasar_version"
 
-    compile (project(':core')) {
+    compile ("net.corda.kernel:corda-core:${corda_kernel_version}") {
         transitive = false
     }
 

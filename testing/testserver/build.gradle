@@ -25,7 +25,7 @@ processResources {
 }
 
 dependencies {
-    compile project(':core')
+    compile "net.corda.kernel:corda-core:${corda_kernel_version}"
     compile project(':client:rpc')
     compile project(':client:jackson')
     compile project(':tools:cliutils')

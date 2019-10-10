@@ -5,7 +5,7 @@ configurations {
 }
 
 dependencies {
-    testCompile project(':core')
+    testCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
     testCompile project(':finance:workflows')
     testCompile project(':node-driver')
     testCompile project(path: ':core-deterministic:testing:verifier', configuration: 'runtimeArtifacts')

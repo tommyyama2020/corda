@@ -5,7 +5,7 @@ apply plugin: 'net.corda.plugins.api-scanner'
 apply plugin: 'com.jfrog.artifactory'
 
 dependencies {
-    compile project(':serialization')
+    compile "net.corda.kernel:corda-serialization:${corda_kernel_version}"
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // Jackson and its plugins: parsing to/from JSON and other textual formats.
@@ -17,7 +17,7 @@ dependencies {
     compile "com.google.guava:guava:$guava_version"
 
     testCompile project(':test-utils')
-    testCompile project(path: ':core', configuration: 'testArtifacts')
+    testCompile "net.corda.kernel:corda-core:${corda_kernel_version}:test"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_jupiter_version}"
     testImplementation "junit:junit:$junit_version"

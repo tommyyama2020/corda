@@ -25,7 +25,7 @@ dependencies {
     cordapp project(path: ':samples:simm-valuation-demo:contracts-states', configuration: 'shrinkArtifacts')
 
     // Corda integration dependencies
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
 
     // Cordapp dependencies
     // Specify your cordapp's dependencies below, including dependent cordapps

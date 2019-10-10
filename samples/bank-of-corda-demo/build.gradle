@@ -20,7 +20,7 @@ dependencies {
     // Corda integration dependencies
     cordaRuntime project(path: ":node:capsule", configuration: 'runtimeArtifacts')
     cordaRuntime project(path: ":testing:testserver:testcapsule:", configuration: 'runtimeArtifacts')
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
     cordaCompile project(':client:jfx')
     cordaCompile project(':client:rpc')
     cordaCompile(project(':testing:testserver')) {

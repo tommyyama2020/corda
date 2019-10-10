@@ -4,8 +4,8 @@ apply plugin: 'kotlin'
 description 'Corda serialization tests'
 
 dependencies {
-    testCompile project(":serialization")
-    testCompile project(path: ':serialization', configuration: 'testArtifacts')
+    testCompile "net.corda.kernel:corda-serialization:${corda_kernel_version}"
+    testCompile "net.corda.kernel:corda-serialization:${corda_kernel_version}:test"
     testCompile project(':node-driver')
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_jupiter_version}"

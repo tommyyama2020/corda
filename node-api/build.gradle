@@ -6,8 +6,8 @@ apply plugin: 'com.jfrog.artifactory'
 description 'Corda node API'
 
 dependencies {
-    compile project(":core")
-    compile project(":serialization")  // TODO Remove this once the NetworkBootstrapper class is moved into the tools:bootstrapper module
+    compile "net.corda.kernel:corda-core:${corda_kernel_version}"
+    compile "net.corda.kernel:corda-serialization:${corda_kernel_version}"  // TODO Remove this once the NetworkBootstrapper class is moved into the tools:bootstrapper module
     compile project(':common-configuration-parsing') // TODO Remove this dependency once NetworkBootsrapper is moved into tools:bootstrapper
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

@@ -12,11 +12,11 @@ configurations {
 }
 
 dependencies {
-    deterministicArtifacts project(path: ':serialization-deterministic', configuration: 'deterministicArtifacts')
-    deterministicArtifacts project(path: ':core-deterministic', configuration: 'deterministicArtifacts')
+    deterministicArtifacts "net.corda.kernel:corda-serialization-deterministic:${corda_kernel_version}"
+    deterministicArtifacts "net.corda.kernel:corda-core-deterministic:${corda_kernel_version}"
 
-    runtimeArtifacts project(':serialization')
-    runtimeArtifacts project(':core')
+    runtimeArtifacts "net.corda.kernel:corda-serialization:${corda_kernel_version}"
+    runtimeArtifacts "net.corda.kernel:corda-core:${corda_kernel_version}"
 
     // Compile against the deterministic artifacts to ensure that we use only the deterministic API subset.
     compileOnly configurations.deterministicArtifacts

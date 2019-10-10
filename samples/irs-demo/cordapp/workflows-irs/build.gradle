@@ -13,7 +13,7 @@ dependencies {
     cordapp project(':finance:workflows')
 
     // Corda integration dependencies
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
     
 
     compile("com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version")

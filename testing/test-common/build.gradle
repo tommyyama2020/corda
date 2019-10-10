@@ -3,7 +3,7 @@ apply plugin: 'net.corda.plugins.api-scanner'
 apply plugin: 'com.jfrog.artifactory'
 
 dependencies {
-    compile project(':core')
+    compile "net.corda.kernel:corda-core:${corda_kernel_version}"
     compile project(':node-api')
     compile project(':tools:cliutils')
     compile project(":common-logging")

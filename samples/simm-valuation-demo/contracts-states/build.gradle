@@ -33,7 +33,7 @@ dependencies {
     cordapp project(':finance:contracts')
 
     // Corda integration dependencies
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
 
 
     // Cordapp dependencies

@@ -57,8 +57,8 @@ dependencies {
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:${junit_platform_version}"
 
     testCompile "commons-fileupload:commons-fileupload:$fileupload_version"
-    testCompile project(":core")
-    testCompile project(path: ':core', configuration: 'testArtifacts')
+    testCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
+    testCompile "net.corda.kernel:corda-core:${corda_kernel_version}:test"
     
     // Guava: Google test library (collections test suite)
     testCompile "com.google.guava:guava-testlib:$guava_version"

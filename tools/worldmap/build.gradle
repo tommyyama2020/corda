@@ -1,7 +1,7 @@
 apply plugin: 'kotlin'
 
 dependencies {
-    implementation project(':core')
+    implementation "net.corda.kernel:corda-core:${corda_kernel_version}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
     testImplementation "junit:junit:$junit_version"

@@ -68,7 +68,7 @@ processSmokeTestResources {
 // build/reports/project/dependencies/index.html for green highlighted parts of the tree.
 
 dependencies {
-    compile project(':core')
+    compile "net.corda.kernel:corda-core:${corda_kernel_version}"
     compile project(':node-api')
 
     // For caches rather than guava

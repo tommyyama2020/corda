@@ -4,7 +4,7 @@ apply plugin: 'net.corda.plugins.cordapp'
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    cordaCompile project(':core')
+    cordaCompile "net.corda.kernel:corda-core:${corda_kernel_version}"
 
     // The trader demo CorDapp depends upon Cash CorDapp features
     cordapp project(':finance:contracts')

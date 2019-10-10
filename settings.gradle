@@ -14,7 +14,6 @@ include 'confidential-identities'
 include 'finance:contracts'
 include 'finance:workflows'
 include 'isolated'
-include 'core'
 include 'core-tests'
 include 'docs'
 include 'node-api'
@@ -76,7 +75,6 @@ include 'samples:bank-of-corda-demo'
 include 'samples:cordapp-configuration:workflows'
 include 'samples:network-verifier:contracts'
 include 'samples:network-verifier:workflows'
-include 'serialization'
 include 'serialization-tests'
 
 // Common libraries - start
@@ -93,11 +91,9 @@ project(":common-logging").projectDir = new File("$settingsDir/common/logging")
 
 apply from: 'buildCacheSettings.gradle'
 
-include 'core-deterministic'
 include 'core-deterministic:testing'
 include 'core-deterministic:testing:data'
 include 'core-deterministic:testing:verifier'
-include 'serialization-deterministic'
 
 include 'tools:checkpoint-agent'
 findProject(':tools:checkpoint-agent')?.name = 'checkpoint-agent'

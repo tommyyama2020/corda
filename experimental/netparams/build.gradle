@@ -8,7 +8,7 @@ dependencies {
     compile "org.slf4j:jul-to-slf4j:$slf4j_version"
     compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j_version"
     compile "com.jcabi:jcabi-manifests:$jcabi_manifests_version"
-    compile project(':core')
+    compile "net.corda.kernel:corda-core:${corda_kernel_version}"
     compile project(':node-api')
 }
 
