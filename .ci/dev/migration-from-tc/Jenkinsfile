@@ -43,7 +43,7 @@ pipeline {
                         "-Dartifactory.password=\"\${ARTIFACTORY_CREDENTIALS_PSW}\" " +
                         "-Dgit.branch=\"\${GIT_BRANCH}\" " +
                         "-Dgit.target.branch=\"\${GIT_BRANCH}\" " +
-                        " build --stacktrace"
+                        " build -x test --stacktrace"
             }
         }
     }
