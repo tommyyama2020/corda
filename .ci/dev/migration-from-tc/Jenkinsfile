@@ -8,6 +8,7 @@ pipeline {
     options {
         timestamps()
         timeout(time: 3, unit: 'HOURS')
+        disableConcurrentBuilds() // this makes killAllExistingBuildsForJob always do nothing
         buildDiscarder(logRotator(daysToKeepStr: '7', artifactDaysToKeepStr: '7'))
     }
 
@@ -43,7 +44,7 @@ pipeline {
                         "-Dartifactory.password=\"\${ARTIFACTORY_CREDENTIALS_PSW}\" " +
                         "-Dgit.branch=\"\${GIT_BRANCH}\" " +
                         "-Dgit.target.branch=\"\${GIT_BRANCH}\" " +
-                        " build -x test --stacktrace"
+                        " test --stacktrace"
             }
         }
     }
@@ -51,8 +52,7 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: '**/build/libs/**/*.jar, **/build/distributions/*.tar, **/build/distributions/**/*.zip', fingerprint: true, onlyIfSuccessful: true
-            sh 'find . -type f'
-            // junit '**/build/test-results-xml/**/*.xml'
+            junit '**/build/test-results-xml/**/*.xml'
         }
         cleanup {
             deleteDir() /* clean up our workspace */
