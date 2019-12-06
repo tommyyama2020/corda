@@ -7,6 +7,7 @@ pipeline {
     agent { label 'gke' }
     options {
         timestamps()
+        timeout(time: 3, unit: 'HOURS')
         buildDiscarder(logRotator(daysToKeepStr: '7', artifactDaysToKeepStr: '7'))
     }
 
