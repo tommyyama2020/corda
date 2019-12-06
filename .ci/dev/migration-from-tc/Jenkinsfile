@@ -51,7 +51,6 @@ pipeline {
 
     post {
         always {
-            sh 'find . -type f'
             archiveArtifacts artifacts: '**/build/libs/**/*.jar, **/build/distributions/**/*.tar, **/build/distributions/**/*.zip', fingerprint: true, onlyIfSuccessful: true
             junit '**/build/test-results/**/*.xml'
         }
