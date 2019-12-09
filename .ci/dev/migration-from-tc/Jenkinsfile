@@ -1,14 +1,35 @@
 #!groovy
 
-def DEFAULT_GRADLE_PARAMS = [
+def GRADLE_PARAMS = [
+    '--info',
     '-Pcompilation.warningsAsErrors=false',
     '-Ptests.failFast=true',
+]
+
+def GRADLE_TARGETS = [
+    'clean',
+    'test'
 ]
 
 @Library('existing-build-control')
 import static com.r3.build.BuildControl.killAllExistingBuildsForJob
 
 killAllExistingBuildsForJob(env.JOB_NAME, env.BUILD_NUMBER.toInteger())
+
+/**
+ * Get the docker build arguments
+ * Please note, the quotation is correct - all variables referenced there are in fact unix shell variables
+ * @return a string with the command line arguments for the 'docker build'
+ */
+String dockerBuildArgs() {
+    def args = [
+      '--force-rm',                                    // make sure containers are removed if building an image failed
+      '--build-arg builder_user=${USER}',
+      '--build-arg builder_uid=${UID}',
+    ]
+    return args.join(' ')
+}
+
 
 pipeline {
     agent { label 'k8s' }
@@ -20,20 +41,28 @@ pipeline {
     }
 
     environment {
+        UID = sh(returnStdout: true, script: 'id -u').trim()
         DOCKER_TAG_TO_USE = "${env.GIT_COMMIT.subSequence(0, 8)}"
         EXECUTOR_NUMBER = "${env.EXECUTOR_NUMBER}"
         BUILD_ID = "${env.BUILD_ID}-${env.JOB_NAME}"
-        ARTIFACTORY_CREDENTIALS = credentials('artifactory-credentials')
     }
 
     stages {
         stage('Unit Tests') {
+            agent {
+                dockerfile {
+                    additionalBuildArgs '--force-rm=true'
+                    dir '.ci/dev/migration-from-tc/docker'
+                    additionalBuildArgs dockerBuildArgs()
+                    reuseNode true
+                }
+            }
             steps {
+                sh 'env'
+                sh 'pwd'
                 sh """
-                    ./gradlew ${DEFAULT_GRADLE_PARAMS.join(' ')} --stacktrace \
-                    -Dartifactory.username="${ARTIFACTORY_CREDENTIALS_USR}"   \
-                    -Dartifactory.password="${ARTIFACTORY_CREDENTIALS_PSW}"   \
-                    test
+                    ./gradlew ${GRADLE_PARAMS.join(' ')} --stacktrace \
+                    ${GRADLE_TARGETS.join(' ')}
                 """
             }
         }
