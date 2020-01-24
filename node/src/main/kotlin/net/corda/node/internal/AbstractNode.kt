@@ -3,6 +3,7 @@ package net.corda.node.internal
 import com.codahale.metrics.MetricRegistry
 import com.google.common.collect.MutableClassToInstanceMap
 import com.google.common.util.concurrent.MoreExecutors
+import com.google.common.util.concurrent.ThreadFactoryBuilder
 import com.zaxxer.hikari.pool.HikariPool
 import net.corda.confidential.SwapIdentitiesFlow
 import net.corda.core.CordaException
@@ -338,6 +339,8 @@ abstract class AbstractNode<S>(val configuration: NodeConfiguration,
      * or [rx.internal.schedulers.CachedThreadScheduler] (with shutdown registered with [runOnStop]) for shared-JVM testing.
      */
     protected abstract val rxIoScheduler: Scheduler
+
+    val externalOperationExecutor = createExternalOperationExecutor(configuration.flowExternalOperationThreadPoolSize)
 
     /**
      * Completes once the node has successfully registered with the network map service
@@ -731,6 +734,17 @@ abstract class AbstractNode<S>(val configuration: NodeConfiguration,
         ).tokenize()
     }
 
+    private fun createExternalOperationExecutor(numberOfThreads: Int): ExecutorService {
+        when (numberOfThreads) {
+            1 -> log.info("Flow external operation executor has $numberOfThreads thread")
+            else -> log.info("Flow external operation executor has $numberOfThreads threads")
+        }
+        return Executors.newFixedThreadPool(
+            numberOfThreads,
+            ThreadFactoryBuilder().setNameFormat("flow-external-operation-thread").build()
+        )
+    }
+
     private fun isRunningSimpleNotaryService(configuration: NodeConfiguration): Boolean {
         return configuration.notary != null && configuration.notary?.className == SimpleNotaryService::class.java.name
     }
@@ -940,7 +954,9 @@ abstract class AbstractNode<S>(val configuration: NodeConfiguration,
         runOnStop.clear()
         shutdownExecutor.shutdown()
         _started = null
-        nodeLifecycleEventsDistributor.distributeEvent(NodeLifecycleEvent.AfterNodeStop(nodeServicesContext))
+        nodeLifecycleEventsDistributor.distributeEvent(NodeLifecycleEvent.AfterNodeStop(nodeServicesContext)).then {
+            nodeLifecycleEventsDistributor.close()
+        }
     }
 
     protected abstract fun makeMessagingService(): MessagingService
@@ -1111,6 +1127,7 @@ abstract class AbstractNode<S>(val configuration: NodeConfiguration,
         override val networkParametersService: NetworkParametersStorage get() = this@AbstractNode.networkParametersStorage
         override val attachmentTrustCalculator: AttachmentTrustCalculator get() = this@AbstractNode.attachmentTrustCalculator
         override val diagnosticsService: DiagnosticsService get() = this@AbstractNode.diagnosticsService
+        override val externalOperationExecutor: ExecutorService get() = this@AbstractNode.externalOperationExecutor
 
         private lateinit var _myInfo: NodeInfo
         override val myInfo: NodeInfo get() = _myInfo
@@ -1231,13 +1248,13 @@ fun createCordaPersistence(databaseConfig: DatabaseConfig,
     val jdbcUrl = hikariProperties.getProperty("dataSource.url", "")
     return CordaPersistence(
             databaseConfig,
-            schemaService.schemaOptions.keys,
+            schemaService.schemas,
             jdbcUrl,
             cacheFactory,
             attributeConverters, customClassLoader,
             errorHandler = { t ->
                 FlowStateMachineImpl.currentStateMachine()?.scheduleEvent(Event.Error(t))
-    })
+            })
 }
 
 fun CordaPersistence.startHikariPool(hikariProperties: Properties, databaseConfig: DatabaseConfig, schemas: Set<MappedSchema>, metricRegistry: MetricRegistry? = null, cordappLoader: CordappLoader? = null, currentDir: Path? = null, ourName: CordaX500Name) {
